@@ -8,12 +8,9 @@ const io = socketio(server);
 
 io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
-  socket.on("from_client", () => {
-    console.log("Collected a new event from client");
+  socket.on("msg_send", (data) => {
+    socket.broadcast.emit("msg_rcvd", data);
   });
-  setInterval(() => {
-    socket.emit("from_server");
-  }, 2000);
 });
 
 app.use("/", express.static(__dirname + "/public"));
